@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body {
+                font-family: Arial;
+                background-color: rgb(202, 202, 202);
+            }
+            .todo-grid,
+            .todo2-grid {
+                display: grid;
+                grid-template-columns: 200px 150px 100px;
+                column-gap: 10px;
+                row-gap: 10px;
+                align-items: center;
+            }
+            .todo2-grid {
+                margin-bottom: 10px;
+                align-items: stretch;
+            }
+            .name-input,
+            .date-input{
+                font-size: 15px;
+                padding: 6px;
+            }
+            .add-but{
+                background-color: green;
+                color: white;
+                border: none;
+                font-size: 15px;
+                cursor: pointer;
+            }
+            .del-button {
+                background-color: red;
+                color: white;
+                border: none;
+                font-size: 15px;
+                cursor: pointer;
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <p>To-Do List</p>
+        <div class="todo2-grid"><input placeholder="to-do name"
+        class="js-name name-input">
+        <input type="date" class="js-date date-input">
+        <button onclick="
+        todo();
+        " class="add-but">Add</button></div>
+
+        <div class="js-list todo-grid" ></div>
+
+        <script>  
+            const todoList=[];
+            renderToDo();
+            function renderToDo() {
+                let todoHTML='';
+                for(let i=0;i< todoList.length;i++){
+                    const todo=todoList[i];
+                    //const name = todo.name;
+                    //const due = todo.dueDate;
+                    const { name, dueDate } = todo;
+                    const html =`
+                    <div>
+                        ${name} 
+                    </div>
+                    <div>${dueDate}</div>
+                    <button onclick="
+                    todoList.splice(${i},1);
+                    renderToDo();
+                    " class="del-button">Delete</button>`;
+                    todoHTML += html;
+                }
+                document.querySelector('.js-list').innerHTML = todoHTML;
+            }
+
+            function todo() {
+            const inputElement = document.querySelector('.js-name');
+            const name = inputElement.value.trim();
+            const dateinput = document.querySelector('.js-date');
+            const dueDate = dateinput.value;
+
+            if (name === '' || dueDate === '') {
+                alert('Please fill out both fields.');
+                return;
+            }
+
+            todoList.push({ name, dueDate });
+            inputElement.value = '';
+            renderToDo();
+            }
+        </script>
+    </body>
+</html>
